@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from enum import Enum
+from schemas.explanation import AIExplanation
 
 class MatchStatus(str, Enum):
     MATCHED = "MATCHED"
@@ -28,3 +29,9 @@ class MatchingResult(BaseModel):
     experience_match: bool
     education_match: bool
     scores: ScoreBreakdown
+
+class FullAnalysisResponse(BaseModel):
+    resume_id: str
+    jd_id: str
+    match_data: MatchingResult
+    explanation: "AIExplanation"    

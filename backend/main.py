@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# We added 'extract' to the end of this import line!
-from api.routers import resumes, job_descriptions, extract 
+from api.routers import resumes, job_descriptions, extract, analyze
 
 app = FastAPI(title="CareerFit API", version="1.0.0")
 
@@ -22,3 +21,4 @@ async def root():
 app.include_router(resumes.router, prefix="/api/v1/resumes", tags=["Resumes"])
 app.include_router(job_descriptions.router, prefix="/api/v1/jobs", tags=["Job Descriptions"])
 app.include_router(extract.router, prefix="/api/v1/extract", tags=["AI Extraction"])
+app.include_router(analyze.router, prefix="/api/v1/analyze", tags=["Analysis Engine"])
