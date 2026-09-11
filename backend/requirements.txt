@@ -31,10 +31,12 @@ httplib2==0.32.0
 httpx==0.28.1
 hyperframe==6.1.0
 idna==3.19
+iniconfig==2.3.0
 Mako==1.4.1
 MarkupSafe==3.0.3
 multidict==6.8.0
 packaging==26.3
+pluggy==1.6.0
 postgrest==2.31.0
 propcache==0.5.2
 proto-plus==1.28.2
@@ -45,11 +47,13 @@ pycparser==3.0
 pydantic==2.13.5
 pydantic-settings==2.15.0
 pydantic_core==2.46.5
+Pygments==2.21.0
 PyJWT==2.13.0
 pymupdf==1.28.2
 pyparsing==3.3.2
 pypdf==6.18.1
 PyPDF2==3.0.1
+pytest==9.1.1
 python-dotenv==1.2.3
 realtime==2.31.0
 requests==2.34.2
