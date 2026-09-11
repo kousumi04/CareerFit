@@ -41,6 +41,9 @@ export function Navbar() {
               <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-900">
                 Dashboard
               </Link>
+              <Link href="/resumes" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+                Resumes
+              </Link>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 Logout
               </Button>
