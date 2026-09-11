@@ -11,12 +11,10 @@ export function Navbar() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    // Get active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
 
-    // Listen for auth changes (login, logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -43,6 +41,9 @@ export function Navbar() {
               </Link>
               <Link href="/resumes" className="text-sm font-medium text-slate-600 hover:text-slate-900">
                 Resumes
+              </Link>
+              <Link href="/jobs" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+                Jobs
               </Link>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 Logout
