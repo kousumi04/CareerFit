@@ -7,7 +7,7 @@ from schemas.explanation import AIExplanation
 
 # Re-use our Groq client
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL_NAME = "llama3-70b-8192"
+MODEL_NAME = "openai/gpt-oss-120b"
 
 def generate_match_explanation(resume: ExtractedResume, jd: ExtractedJD, match_result: MatchingResult) -> AIExplanation:
     prompt = f"""

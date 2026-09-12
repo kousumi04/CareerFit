@@ -22,8 +22,8 @@ export default function JobsPage() {
     if (!session) return;
 
     try {
-      // Using 127.0.0.1 to avoid the IPv6 trap
-      const res = await fetch("http://127.0.0.1:8000/api/v1/jobs", {
+      // Changed to relative path to use the proxy
+      const res = await fetch("/api/v1/jobs", {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
       if (res.ok) {

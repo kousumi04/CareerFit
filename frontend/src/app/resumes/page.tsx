@@ -16,8 +16,8 @@ export default function ResumesPage() {
     if (!session) return;
 
     try {
-      // Switched to 127.0.0.1 to avoid IPv6 localhost resolution issues
-      const res = await fetch("http://127.0.0.1:8000/api/v1/resumes", {
+      // Changed to relative path to use the proxy
+      const res = await fetch("/api/v1/resumes", {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
       if (res.ok) {
