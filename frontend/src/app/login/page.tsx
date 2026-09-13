@@ -45,10 +45,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-950">
+      <Card className="w-full max-w-md border-slate-200 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <CardHeader>
-          <CardTitle>{isSignUp ? "Create an account" : "Welcome back"}</CardTitle>
+          <CardTitle className="text-slate-950 dark:text-white">{isSignUp ? "Create an account" : "Welcome back"}</CardTitle>
           <CardDescription>
             {isSignUp ? "Enter your email below to create your account" : "Enter your email below to login to your account"}
           </CardDescription>
@@ -56,7 +56,7 @@ export default function LoginPage() {
         <form onSubmit={handleAuth}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+              <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md dark:bg-red-500/10 dark:text-red-300">
                 {error}
               </div>
             )}
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-slate-600 hover:text-slate-900 hover:underline"
+              className="text-sm text-slate-600 hover:text-slate-900 hover:underline dark:text-slate-300 dark:hover:text-white"
             >
               {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
             </button>

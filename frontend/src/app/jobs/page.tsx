@@ -83,7 +83,7 @@ export default function JobsPage() {
   return (
     <div className="container mx-auto p-8 max-w-4xl">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-slate-900">My Job Descriptions</h1>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">My Job Descriptions</h1>
       </div>
 
       <Card className="mb-8">
@@ -123,7 +123,7 @@ export default function JobsPage() {
                 onChange={(e) => setRawText(e.target.value)}
                 placeholder="Paste the full job description here..."
                 required
-                className="w-full min-h-[200px] p-3 rounded-md border border-slate-200 bg-transparent text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950"
+                className="w-full min-h-[200px] p-3 rounded-md border border-slate-200 bg-transparent text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 dark:border-slate-700 dark:text-slate-100 dark:focus-visible:ring-slate-300"
               />
             </div>
 
@@ -135,17 +135,17 @@ export default function JobsPage() {
       </Card>
 
       <div className="grid gap-4">
-        <h2 className="text-xl font-semibold">Saved Jobs</h2>
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Saved Jobs</h2>
         {loading ? (
-          <p className="text-slate-500">Loading...</p>
+          <p className="text-slate-500 dark:text-slate-400">Loading...</p>
         ) : jobs.length === 0 ? (
-          <p className="text-slate-500">No jobs saved yet.</p>
+          <p className="text-slate-500 dark:text-slate-400">No jobs saved yet.</p>
         ) : (
           jobs.map((job) => (
             <Card key={job.id} className="p-4 flex justify-between items-center">
               <div>
                 <p className="font-medium">{job.title}</p>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   {job.company ? `${job.company} • ` : ""} 
                   Added on {new Date(job.created_at).toLocaleDateString()}
                 </p>

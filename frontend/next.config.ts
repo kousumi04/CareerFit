@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async rewrites() {
-    // Falls back to localhost for local dev if the env variable is missing
-    const destinationUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    // Explicitly using 127.0.0.1 instead of localhost to prevent IPv6 drops
+    const destinationUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
     
     return [
       {

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const router = useRouter();
@@ -34,23 +35,24 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b bg-white">
+    <nav className="border-b border-slate-200 bg-white/95 shadow-sm dark:border-slate-800 dark:bg-slate-950/95">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-slate-900">
+        <Link href="/" className="text-xl font-bold text-slate-900 dark:text-white">
           CareerFit
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {user ? (
             <>
-              <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
                 Dashboard
               </Link>
-              <Link href="/resumes" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/resumes" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
                 Resumes
               </Link>
-              <Link href="/jobs" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/jobs" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
                 Jobs
               </Link>
+              <ThemeToggle />
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 Logout
               </Button>

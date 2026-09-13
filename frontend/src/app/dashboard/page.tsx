@@ -82,7 +82,7 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto p-8 max-w-5xl">
-      <h1 className="text-3xl font-bold text-slate-900 mb-8">CareerFit Match Engine</h1>
+      <h1 className="text-3xl font-bold text-slate-900 mb-8 dark:text-white">CareerFit Match Engine</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <select 
-              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900"
+              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
               value={selectedResume}
               onChange={(e) => setSelectedResume(e.target.value)}
             >
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <select 
-              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900"
+              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
             >
@@ -129,28 +129,28 @@ export default function DashboardPage() {
           <Card className="border-t-4 border-t-indigo-600 shadow-lg">
             <CardHeader className="pb-2">
               <CardTitle className="text-2xl">Analysis Report</CardTitle>
-              <CardDescription>Overall Match Score: <span className="font-bold text-lg text-indigo-600">{result.match_data.scores.overall_score}%</span></CardDescription>
+              <CardDescription>Overall Match Score: <span className="font-bold text-lg text-indigo-600 dark:text-indigo-300">{result.match_data.scores.overall_score}%</span></CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-700 italic mb-6">"{result.explanation.summary}"</p>
+              <p className="text-slate-700 italic mb-6 dark:text-slate-300">"{result.explanation.summary}"</p>
               
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-emerald-50 p-4 rounded-md border border-emerald-100">
-                  <h3 className="font-semibold text-emerald-800 mb-2">Key Strengths</h3>
-                  <ul className="list-disc pl-5 text-sm text-emerald-900 space-y-1">
+                <div className="bg-emerald-50 p-4 rounded-md border border-emerald-100 dark:border-emerald-500/30 dark:bg-emerald-500/10">
+                  <h3 className="font-semibold text-emerald-800 mb-2 dark:text-emerald-200">Key Strengths</h3>
+                  <ul className="list-disc pl-5 text-sm text-emerald-900 space-y-1 dark:text-emerald-100">
                     {result.explanation.strengths.map((s: string, i: number) => <li key={i}>{s}</li>)}
                   </ul>
                 </div>
-                <div className="bg-rose-50 p-4 rounded-md border border-rose-100">
-                  <h3 className="font-semibold text-rose-800 mb-2">Identified Gaps</h3>
-                  <ul className="list-disc pl-5 text-sm text-rose-900 space-y-1">
+                <div className="bg-rose-50 p-4 rounded-md border border-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10">
+                  <h3 className="font-semibold text-rose-800 mb-2 dark:text-rose-200">Identified Gaps</h3>
+                  <ul className="list-disc pl-5 text-sm text-rose-900 space-y-1 dark:text-rose-100">
                     {result.explanation.gaps.map((g: string, i: number) => <li key={i}>{g}</li>)}
                   </ul>
                 </div>
               </div>
               
-              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-md text-center">
-                <p className="font-medium text-slate-800">Recommendation: {result.explanation.recommendation}</p>
+              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-md text-center dark:border-slate-800 dark:bg-slate-950">
+                <p className="font-medium text-slate-800 dark:text-slate-200">Recommendation: {result.explanation.recommendation}</p>
               </div>
             </CardContent>
           </Card>
