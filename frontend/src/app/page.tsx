@@ -45,12 +45,6 @@ export default function Home() {
               >
                 Get started
               </Link>
-              <Link
-                href="/jobs"
-                className="inline-flex h-12 items-center justify-center rounded-md border border-slate-300 bg-white px-6 text-sm font-semibold text-slate-950 transition-colors hover:bg-slate-100"
-              >
-                Add a job
-              </Link>
             </div>
           </div>
 

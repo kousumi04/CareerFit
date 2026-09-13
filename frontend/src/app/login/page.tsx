@@ -28,8 +28,7 @@ export default function LoginPage() {
           password,
         });
         if (error) throw error;
-        alert("Registration successful! You can now log in.");
-        setIsSignUp(false);
+        router.push("/dashboard");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -38,8 +37,8 @@ export default function LoginPage() {
         if (error) throw error;
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setLoading(false);
     }

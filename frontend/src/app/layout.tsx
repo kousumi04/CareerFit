@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AuthGuard } from "@/components/AuthGuard";
 import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-slate-50 flex flex-col`}>
-        <Navbar />
-        <main className="flex-1">
-          {children}
-        </main>
+        <AuthGuard>
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
+        </AuthGuard>
       </body>
     </html>
   );

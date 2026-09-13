@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -26,6 +28,10 @@ export function Navbar() {
     await supabase.auth.signOut();
     router.push("/");
   };
+
+  if (pathname === "/" || !user) {
+    return null;
+  }
 
   return (
     <nav className="border-b bg-white">
