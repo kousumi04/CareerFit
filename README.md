@@ -157,6 +157,103 @@ CareerFit follows a multi-stage pipeline that combines document understanding, s
              FINAL ANALYSIS REPORT
 ```
 
+```mermaid
+flowchart TD
+
+subgraph group_frontend["Next.js frontend"]
+  node_landing["Landing and login<br/>Next.js routes<br/>[page.tsx]"]
+  node_dashboard["Protected dashboard<br/>Next.js route<br/>[page.tsx]"]
+  node_auth_guard["Route access guard<br/>React auth boundary<br/>[AuthGuard.tsx]"]
+  node_supabase_client["Supabase session client<br/>frontend auth client<br/>[supabase.ts]"]
+  node_report_ui["Analysis report UI<br/>React component<br/>[AnalysisReport.tsx]"]
+end
+
+subgraph group_api["FastAPI backend"]
+  node_fastapi{{"FastAPI application<br/>API composition<br/>[main.py]"}}
+  node_auth_dependency["JWT user context<br/>FastAPI dependency<br/>[deps.py]"]
+  node_resource_apis["Resume and job APIs<br/>CRUD routers<br/>[resumes.py]"]
+  node_resume_model[("Resume persistence model<br/>SQLAlchemy ORM<br/>[resume.py]")]
+  node_extract_api["Extraction API<br/>FastAPI router<br/>[extract.py]"]
+  node_analyze_api["Analysis API<br/>FastAPI router<br/>[analyze.py]"]
+  node_database_layer["Async database layer<br/>SQLAlchemy / asyncpg<br/>[database.py]"]
+end
+
+subgraph group_pipeline["Analysis pipeline"]
+  node_pdf_parser["PDF text parser<br/>PyPDF2 service<br/>[pdf_parser.py]"]
+  node_ai_extractor["Structured extraction<br/>Groq extraction service<br/>[ai_extractor.py]"]
+  node_analyzer["Analysis orchestrator<br/>analysis service<br/>[analyzer.py]"]
+  node_matching_engine["Semantic matching engine<br/>deterministic scorer<br/>[engine.py]"]
+  node_ai_explainer["Fit report explainer<br/>Groq explanation service<br/>[ai_explainer.py]"]
+end
+
+subgraph group_supabase["Supabase platform"]
+  node_supabase_auth(("Supabase Auth<br/>identity provider"))
+  node_postgres[("Supabase PostgreSQL<br/>user-scoped database<br/>[schema.sql]")]
+  node_private_storage[("Private PDF storage<br/>Supabase Storage<br/>[schema.sql]")]
+end
+
+node_groq(("Groq LLM<br/>external AI service"))
+node_embeddings["Sentence Transformers<br/>embedding model<br/>[requirements.txt]"]
+
+node_landing -->|"signs in"| node_supabase_client
+node_supabase_client -->|"establishes session"| node_supabase_auth
+node_supabase_client -->|"supplies session"| node_auth_guard
+node_auth_guard -->|"permits authenticated access"| node_dashboard
+node_dashboard -->|"calls API with bearer token"| node_fastapi
+node_fastapi -->|"authenticates requests"| node_auth_dependency
+node_fastapi -->|"mounts"| node_resource_apis
+node_fastapi -->|"mounts"| node_extract_api
+node_fastapi -->|"mounts"| node_analyze_api
+node_auth_dependency -->|"validates JWT"| node_supabase_auth
+node_resource_apis -->|"persists records"| node_resume_model
+node_resource_apis -->|"uses"| node_database_layer
+node_resource_apis -->|"manages PDFs"| node_private_storage
+node_database_layer -->|"async connection"| node_postgres
+node_extract_api -->|"extracts PDF text"| node_pdf_parser
+node_extract_api -->|"structures source text"| node_ai_extractor
+node_ai_extractor -->|"prompts"| node_groq
+node_analyze_api -->|"runs fit analysis"| node_analyzer
+node_analyzer -->|"computes score"| node_matching_engine
+node_matching_engine -->|"embeds related skills"| node_embeddings
+node_analyzer -->|"adds narrative guidance"| node_ai_explainer
+node_ai_explainer -->|"prompts"| node_groq
+node_analyze_api -->|"returns structured report"| node_report_ui
+
+click node_landing "https://github.com/kousumi04/careerfit/blob/main/frontend/src/app/page.tsx"
+click node_dashboard "https://github.com/kousumi04/careerfit/blob/main/frontend/src/app/dashboard/page.tsx"
+click node_auth_guard "https://github.com/kousumi04/careerfit/blob/main/frontend/src/components/AuthGuard.tsx"
+click node_supabase_client "https://github.com/kousumi04/careerfit/blob/main/frontend/src/lib/supabase.ts"
+click node_report_ui "https://github.com/kousumi04/careerfit/blob/main/frontend/src/components/AnalysisReport.tsx"
+click node_fastapi "https://github.com/kousumi04/careerfit/blob/main/backend/main.py"
+click node_auth_dependency "https://github.com/kousumi04/careerfit/blob/main/backend/core/deps.py"
+click node_resource_apis "https://github.com/kousumi04/careerfit/blob/main/backend/api/routers/resumes.py"
+click node_resume_model "https://github.com/kousumi04/careerfit/blob/main/backend/models/resume.py"
+click node_extract_api "https://github.com/kousumi04/careerfit/blob/main/backend/api/routers/extract.py"
+click node_analyze_api "https://github.com/kousumi04/careerfit/blob/main/backend/api/routers/analyze.py"
+click node_pdf_parser "https://github.com/kousumi04/careerfit/blob/main/backend/services/pdf_parser.py"
+click node_ai_extractor "https://github.com/kousumi04/careerfit/blob/main/backend/services/ai_extractor.py"
+click node_analyzer "https://github.com/kousumi04/careerfit/blob/main/backend/services/analyzer.py"
+click node_matching_engine "https://github.com/kousumi04/careerfit/blob/main/backend/services/matching/engine.py"
+click node_ai_explainer "https://github.com/kousumi04/careerfit/blob/main/backend/services/ai_explainer.py"
+click node_postgres "https://github.com/kousumi04/careerfit/blob/main/supabase/schema.sql"
+click node_private_storage "https://github.com/kousumi04/careerfit/blob/main/supabase/schema.sql"
+click node_database_layer "https://github.com/kousumi04/careerfit/blob/main/backend/core/database.py"
+click node_embeddings "https://github.com/kousumi04/careerfit/blob/main/backend/requirements.txt"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_landing,node_dashboard,node_auth_guard,node_supabase_client,node_report_ui toneBlue
+class node_fastapi,node_auth_dependency,node_resource_apis,node_resume_model,node_extract_api,node_analyze_api,node_database_layer toneAmber
+class node_pdf_parser,node_ai_extractor,node_analyzer,node_matching_engine,node_ai_explainer toneMint
+class node_supabase_auth,node_postgres,node_private_storage toneRose
+class node_groq,node_embeddings toneNeutral
+```
+
 The analysis combines LLM-based understanding with deterministic semantic matching and scoring.
 
 ---
