@@ -1,1075 +1,1015 @@
-CareerFit
+# CareerFit
 
-AI-Powered, Explainable Resume-to-Job Matching
+<p align="center">
+  <strong>AI-Powered, Explainable Resume-to-Job Matching</strong>
+</p>
 
-   
+<p align="center">
+  Understand your career fit. Discover skill gaps. Prepare with confidence.
+</p>
 
-CareerFit is a full-stack application that analyzes how well a candidate’s resume aligns with a specific job description. It combines AI-powered extraction and analysis with semantic skill matching to generate an explainable report showing the candidate’s overall fit, strengths, gaps, requirement-level evidence, resume improvement suggestions, and interview preparation topics.
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" alt="React"/>
+  <img src="https://img.shields.io/badge/FastAPI-Python-009688?logo=fastapi" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase" alt="Supabase"/>
+  <img src="https://img.shields.io/badge/AI-Groq-purple" alt="Groq"/>
+  <img src="https://img.shields.io/badge/License-Development-lightgrey" alt="Development License"/>
+</p>
 
-Project Overview
+---
 
-CareerFit helps candidates understand how well their resume matches a particular job before applying.
+## Overview
 
-Users can:
+CareerFit is a full-stack application that analyzes how well a candidate's resume aligns with a specific job description.
 
-• Create an account and log in securely
-• Upload and manage PDF resumes
-• Save job descriptions with job title and company
-• Select a resume and job description for analysis
-• Generate an AI-powered resume-to-job fit report
-• Understand why a resume matches or does not match a role
-• Identify important missing or weakly supported skills
-• See evidence from the resume for detected requirements
-• Get actionable resume improvement suggestions
-• Get interview preparation topics based on identified gaps
+It combines AI-powered extraction, semantic skill matching, and deterministic scoring to generate an explainable resume-to-job fit report.
 
-The application is currently configured for local development.
+Instead of providing only a score, CareerFit helps users understand:
 
-Key Features
+* How closely their resume matches a target role.
+* Which skills and qualifications are well supported.
+* Which requirements are partially matched or missing.
+* What evidence from the resume supports each assessment.
+* How to improve their resume.
+* What topics to prepare for interviews.
 
-1. Authentication
+> CareerFit is designed to make resume evaluation more transparent, actionable, and personalized.
 
-• Email/password authentication using Supabase Auth
-• Protected application routes using AuthGuard
-• Supabase JWT bearer-token authentication between frontend and backend
-• User-scoped access to resumes and job descriptions
+---
 
-2. Resume Management
-
-• Upload PDF resumes
-• Extract text from uploaded PDFs
-• Store uploaded files in a private Supabase Storage bucket
-• Create, view, and delete saved resumes
-• Maximum of 5 resumes per user
-• Automatically delete the oldest resume when the limit is exceeded
-
-3. Job Description Management
-
-• Save job descriptions
-• Store job title, company, and raw job description
-• Create, view, and delete saved jobs
-• Maximum of 5 jobs per user
-• Automatically delete the oldest job when the limit is exceeded
-
-4. Explainable Resume-To-Job Analysis
-
-CareerFit generates a structured analysis containing:
-
-• Overall fit score
-• Category-level scores
-• Skill matches
-• Partial skill matches
-• Missing or undetected skills
-• Requirement-level analysis
-• Resume evidence supporting matches
-• Requirement importance
-• Top candidate strengths
-• Top candidate gaps
-• Resume improvement actions
-• Interview preparation topics
-
-The objective is not only to provide a score, but to explain how the score was reached.
-
-5. Semantic Skill Matching
-
-The application also contains a deterministic matching engine supporting:
-
-• Skill normalization
-• Semantic similarity matching
-• Weighted scoring
-• Matching related skills beyond exact keyword matches
-• Automated backend tests
-
-The deterministic matching engine is located under:
-
-backend/services/matching/
-
-Tech Stack
-
-Frontend:
-• Next.js 16
-• React 19
-• TypeScript
-• Tailwind CSS 4
-• shadcn-style UI components
-• Radix UI Progress
-• Supabase JavaScript client
-
-Backend:
-• FastAPI
-• Python
-• SQLAlchemy Async
-• asyncpg
-• Pydantic v2
-• Uvicorn
-
-Database / Authentication / Storage:
-• Supabase Auth
-• Supabase PostgreSQL
-• Supabase Storage
-
-AI / ML:
-• Groq SDK
-• Groq model: openai/gpt-oss-120b
-• Sentence Transformers
-• Semantic model: all-MiniLM-L6-v2
-• PyPDF2
-
-Testing:
-• pytest
-
-Architecture
-
-User
-↓
-
-Next.js Frontend
-
-↓
-
-Supabase Authentication
-
-↓
-
-JWT Bearer Token
-
-↓
-
-FastAPI Backend
-
-↓
-
-┌──────────────────────────────────────┐
-│                                      │
-│  Resume APIs                         │
-│  Job Description APIs                │
-│  Extraction APIs                     │
-│  Analysis APIs                       │
-│                                      │
-└──────────────────────────────────────┘
-
-↓
-
-┌──────────────────┬───────────────────┬──────────────────┐
-│                  │                   │                  │
-↓                  ↓                   ↓                  ↓
-Supabase        Groq LLM       Sentence Transformers   PostgreSQL
-Auth            Extraction     Semantic Matching       Database
-Storage         Analysis
-Explanation
-│                  │                   │
-└──────────────────┼───────────────────┘
-
-↓
-
-Structured Analysis
-
-↓
-
-Analysis Report
-
-↓
-
-Next.js UI
-
-Ai Analysis Pipeline
-
-Resume PDF
-
-↓
-
-PDF Text Extraction
-
-↓
-
-Resume Information Extraction
-
-↓
-
-Structured Resume Profile
-
-↓
-
-Job Description
-
-↓
-
-Job Requirement Extraction
-
-↓
-
-Requirement Classification
-
-↓
-
-Required / Preferred Requirements
-
-↓
-
-Semantic Skill Matching
-
-↓
-
-Requirement-Level Analysis
-
-↓
-
-Weighted Scoring
-
-↓
-
-Explainable Analysis
-
-↓
-
-Recommendations
-
-↓
-
-Final Analysis Report
-
-The analysis combines LLM-based understanding with semantic matching and deterministic scoring.
-
-Analysis Report
-
-The analysis report is designed to provide more than a simple keyword match.
-
-Overall Fit
-
-Provides a high-level assessment of how closely the candidate’s resume aligns with the selected role.
-
-Score Breakdown
-
-The overall assessment can be broken down into categories such as:
-
-• Skills
-• Experience
-• Tools and Technologies
-• Education
-• Responsibilities
-
-This allows users to understand where the overall score comes from.
-
-Skill Matching
-
-Skills can be classified into different levels:
-
-• Strong Match
-• Match
-• Partial Match
-• Weak Evidence
-• Not Detected
-
-Requirement Analysis
+## Features
+
+<details>
+<summary><strong>Authentication & Account Management</strong></summary>
+
+* Email/password authentication using Supabase Auth.
+* Protected application routes with AuthGuard.
+* JWT bearer-token authentication between frontend and backend.
+* User-scoped access to resumes and job descriptions.
+
+</details>
+
+<details>
+<summary><strong>Resume Management</strong></summary>
+
+* Upload PDF resumes.
+* Extract text from uploaded documents.
+* Store files in a private Supabase Storage bucket.
+* Create, view, and delete saved resumes.
+* Maximum of 5 resumes per user.
+* Automatically delete the oldest resume when the limit is exceeded.
+
+</details>
+
+<details>
+<summary><strong>Job Description Management</strong></summary>
+
+* Save job descriptions.
+* Store job title, company, and raw description.
+* Create, view, and delete saved jobs.
+* Maximum of 5 jobs per user.
+* Automatically delete the oldest job when the limit is exceeded.
+
+</details>
+
+<details>
+<summary><strong>Explainable AI Analysis</strong></summary>
+
+CareerFit generates a structured report containing:
+
+* Overall fit score.
+* Category-level score breakdown.
+* Skill matches and partial matches.
+* Missing or undetected skills.
+* Requirement-level analysis.
+* Resume evidence for detected requirements.
+* Requirement importance.
+* Candidate strengths and gaps.
+* Resume improvement suggestions.
+* Interview preparation topics.
+
+</details>
+
+<details>
+<summary><strong>Semantic Skill Matching</strong></summary>
+
+The deterministic matching engine supports:
+
+* Skill normalization.
+* Semantic similarity matching.
+* Weighted scoring.
+* Matching related skills beyond exact keywords.
+* Automated backend tests.
+
+Matching engine location:
+
+`backend/services/matching/`
+
+</details>
+
+---
+
+## How It Works
+
+CareerFit follows a multi-stage pipeline that combines document understanding, semantic matching, and explainable scoring.
+
+```text
+                  RESUME PDF
+                      |
+                      v
+               PDF Text Extraction
+                      |
+                      v
+            Resume Information Extraction
+                      |
+                      v
+             Structured Resume Profile
+                      |
+                      |
+               JOB DESCRIPTION
+                      |
+                      v
+            Job Requirement Extraction
+                      |
+                      v
+             Requirement Classification
+                      |
+                      v
+          Required / Preferred Requirements
+                      |
+                      v
+             Semantic Skill Matching
+                      |
+                      v
+          Requirement-Level Evaluation
+                      |
+                      v
+               Weighted Scoring
+                      |
+                      v
+             Explainable Analysis
+                      |
+                      v
+               Recommendations
+                      |
+                      v
+             FINAL ANALYSIS REPORT
+```
+
+The analysis combines LLM-based understanding with deterministic semantic matching and scoring.
+
+---
+
+## Analysis Report
+
+CareerFit is designed to provide more than a keyword match.
+
+### Overall Fit
+
+A high-level assessment of how closely the candidate's resume aligns with the selected role.
+
+### Score Breakdown
+
+The overall assessment can be analyzed across categories such as:
+
+* Skills.
+* Experience.
+* Tools and Technologies.
+* Education.
+* Responsibilities.
+
+### Skill Matching
+
+Skills are classified into different levels:
+
+| Classification | Meaning                                |
+| :------------- | :------------------------------------- |
+| Strong Match   | Strong evidence of the required skill. |
+| Match          | Relevant skill alignment.              |
+| Partial Match  | Related or incomplete skill alignment. |
+| Weak Evidence  | Limited supporting evidence.           |
+| Not Detected   | Skill not identified in the resume.    |
+
+### Requirement-Level Analysis
 
 Each important job requirement is compared against evidence found in the resume.
 
-The analysis follows:
-
+```text
 Job Requirement
-
-↓
-
+      |
+      v
 Resume Evidence
-
-↓
-
+      |
+      v
 Match Assessment
-
-↓
-
+      |
+      v
 Explanation
+```
 
-Gap Analysis
+### Gap Analysis
 
-The system identifies missing or weakly supported requirements and prioritizes them according to their relevance to the selected job.
+Identifies missing or weakly supported requirements and prioritizes them according to their relevance to the selected job.
 
-Resume Improvements
+### Resume Improvements
 
-The report provides actionable suggestions for improving the resume and better demonstrating relevant skills and experience.
+Provides actionable suggestions for improving the resume and better demonstrating relevant skills and experience.
 
-Interview Preparation
+### Interview Preparation
 
-The system identifies areas that may require additional preparation based on the job requirements and candidate gaps.
+Identifies areas that may require additional preparation based on the job requirements and candidate gaps.
 
-Project Structure
+---
 
+## Architecture
+
+```text
+                         USER
+                          |
+                          v
+                   NEXT.JS FRONTEND
+                          |
+                          v
+                   SUPABASE AUTH
+                          |
+                          v
+                   JWT ACCESS TOKEN
+                          |
+                          v
+                   FASTAPI BACKEND
+                          |
+        +-----------------+-----------------+
+        |                 |                 |
+        v                 v                 v
+   Resume APIs       Job APIs         Analysis APIs
+        |                 |                 |
+        +-----------------+-----------------+
+                          |
+        +-----------------+-----------------+
+        |                 |                 |
+        v                 v                 v
+  Supabase          Groq LLM       Sentence Transformers
+  Storage           Extraction     Semantic Matching
+                    & Analysis
+        |                 |                 |
+        +-----------------+-----------------+
+                          |
+                          v
+                   POSTGRESQL
+                          |
+                          v
+                STRUCTURED ANALYSIS
+                          |
+                          v
+                   ANALYSIS REPORT
+                          |
+                          v
+                   NEXT.JS UI
+```
+
+### System Components
+
+| Component             | Responsibility                                       |
+| :-------------------- | :--------------------------------------------------- |
+| Next.js Frontend      | User interface, navigation, and report presentation. |
+| Supabase Auth         | User authentication and session management.          |
+| FastAPI Backend       | API endpoints and application logic.                 |
+| Supabase Storage      | Private resume PDF storage.                          |
+| PostgreSQL            | Persistent application data.                         |
+| Groq LLM              | AI-powered extraction and analysis.                  |
+| Sentence Transformers | Semantic skill matching.                             |
+| PyPDF2                | PDF text extraction.                                 |
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* Next.js 16
+* React 19
+* TypeScript
+* Tailwind CSS 4
+* shadcn-style UI components
+* Radix UI Progress
+* Supabase JavaScript Client
+
+### Backend
+
+* FastAPI
+* Python
+* SQLAlchemy Async
+* asyncpg
+* Pydantic v2
+* Uvicorn
+
+### Database, Authentication & Storage
+
+* Supabase Auth
+* Supabase PostgreSQL
+* Supabase Storage
+
+### AI & Machine Learning
+
+* Groq SDK
+* Groq model: `openai/gpt-oss-120b`
+* Sentence Transformers
+* Semantic model: `all-MiniLM-L6-v2`
+* PyPDF2
+
+### Testing
+
+* pytest
+
+---
+
+## Project Structure
+
+```text
 CareerFit/
-
-frontend/
-
 │
-├── src/
-│   ├── app/
-│   │   ├── page.tsx
-│   │   ├── login/
-│   │   │   └── page.tsx
-│   │   ├── dashboard/
-│   │   │   └── page.tsx
-│   │   ├── resumes/
-│   │   │   └── page.tsx
-│   │   └── jobs/
-│   │       └── page.tsx
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx
+│   │   │   ├── login/
+│   │   │   │   └── page.tsx
+│   │   │   ├── dashboard/
+│   │   │   │   └── page.tsx
+│   │   │   ├── resumes/
+│   │   │   │   └── page.tsx
+│   │   │   └── jobs/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── components/
+│   │   │   ├── AnalysisReport.tsx
+│   │   │   ├── AuthGuard.tsx
+│   │   │   └── Navbar.tsx
+│   │   │
+│   │   └── lib/
+│   │       └── supabase.ts
 │   │
-│   ├── components/
-│   │   ├── AnalysisReport.tsx
-│   │   ├── AuthGuard.tsx
-│   │   └── Navbar.tsx
+│   └── ...
+│
+├── backend/
+│   ├── api/
+│   │   └── routers/
+│   │       ├── resumes.py
+│   │       ├── job_descriptions.py
+│   │       ├── extract.py
+│   │       └── analyze.py
 │   │
-│   └── lib/
-│       └── supabase.ts
+│   ├── services/
+│   │   ├── analyzer.py
+│   │   ├── ai_extractor.py
+│   │   ├── ai_explainer.py
+│   │   ├── pdf_parser.py
+│   │   └── matching/
+│   │
+│   ├── schemas/
+│   ├── models/
+│   │
+│   ├── core/
+│   │   ├── database.py
+│   │   └── deps.py
+│   │
+│   ├── tests/
+│   │   └── test_engine.py
+│   │
+│   ├── main.py
+│   └── requirements.txt
 │
-└── ...
-
-backend/
-
+├── supabase/
+│   └── schema.sql
 │
-├── api/
-│   └── routers/
-│       ├── resumes.py
-│       ├── job_descriptions.py
-│       ├── extract.py
-│       └── analyze.py
-│
-├── services/
-│   ├── analyzer.py
-│   ├── ai_extractor.py
-│   ├── ai_explainer.py
-│   ├── pdf_parser.py
-│   └── matching/
-│
-├── schemas/
-│
-├── models/
-│
-├── core/
-│   ├── database.py
-│   └── deps.py
-│
-├── tests/
-│   └── test_engine.py
-│
-├── main.py
-└── requirements.txt
+└── README.md
+```
 
-supabase/
+---
 
-└── schema.sql
+## Application Routes
 
-Main Frontend Routes
+| Route        | Description                       |
+| :----------- | :-------------------------------- |
+| `/`          | Landing page.                     |
+| `/login`     | Login and signup page.            |
+| `/dashboard` | Resume-to-job matching interface. |
+| `/resumes`   | Resume upload and management.     |
+| `/jobs`      | Job description management.       |
 
-/
-Landing page
+### Important Frontend Components
 
-/login
+| Component            | Responsibility                            |
+| :------------------- | :---------------------------------------- |
+| `AnalysisReport.tsx` | Renders the structured analysis report.   |
+| `AuthGuard.tsx`      | Protects authenticated routes.            |
+| `Navbar.tsx`         | Provides application navigation.          |
+| `supabase.ts`        | Initializes the Supabase frontend client. |
 
-Login and signup page
+---
 
-/dashboard
+## Getting Started
 
-Resume-to-job matching interface
-
-/resumes
-
-Resume upload and management
-
-/jobs
-
-Job description management
-
-Important Frontend Components
-
-AnalysisReport.tsx
-Renders the structured resume-to-job analysis report.
-
-AuthGuard.tsx
-Protects routes that require authentication.
-
-Navbar.tsx
-Provides navigation for authenticated users.
-
-supabase.ts
-Initializes the Supabase frontend client.
-
-Backend Structure
-
-The backend uses FastAPI with asynchronous database access.
-
-Api Routers
-
-resumes.py
-Handles resume CRUD operations and PDF uploads.
-
-job_descriptions.py
-Handles job description CRUD operations.
-
-extract.py
-Provides resume and job description extraction endpoints.
-
-analyze.py
-Provides resume-to-job analysis endpoints.
-
-Services
-
-analyzer.py
-Groq-based structured analysis and report generation.
-
-ai_extractor.py
-Resume and job description information extraction.
-
-ai_explainer.py
-Legacy explanation generation.
-
-pdf_parser.py
-Resume PDF retrieval and text extraction.
-
-matching/
-Deterministic skill matching and scoring engine.
-
-Getting Started
-
-Prerequisites
+### Prerequisites
 
 Install the following:
 
-• Python 3.10+
-• Node.js
-• npm
-• Git
-• A Supabase project
-• A Groq API key
+* Python 3.10+
+* Node.js
+* npm
+* Git
+* A Supabase project
+* A Groq API key
 
-CLONE THE REPOSITORY
+### 1. Clone the Repository
 
+```bash
 git clone <your-repository-url>
-
 cd CareerFit
+```
 
-Replace <your-repository-url> with the actual repository URL.
+Replace `<your-repository-url>` with the actual repository URL.
 
-SET UP SUPABASE
+---
+
+### 2. Configure Supabase
 
 Create a new Supabase project.
 
-Then:
-
-Open the Supabase SQL Editor.
-
-Open supabase/schema.sql from this repository.
-
-Copy its contents into the SQL Editor.
-
-Execute the SQL.
-
-Verify that the required database tables and policies were created.
-
-Verify that the private resumes Storage bucket exists.
-
-Enable email/password authentication.
+1. Open the Supabase SQL Editor.
+2. Open `supabase/schema.sql` from this repository.
+3. Copy its contents into the SQL Editor.
+4. Execute the SQL.
+5. Verify that the required tables and policies were created.
+6. Verify that the private resumes Storage bucket exists.
+7. Enable email/password authentication.
 
 The schema contains the database tables, Row Level Security policies, storage configuration, and storage access policies required by the application.
 
-SET UP THE BACKEND
+---
+
+### 3. Set Up the Backend
 
 Navigate to the backend directory:
 
+```bash
 cd backend
+```
 
 Create a virtual environment:
 
+```bash
 python -m venv venv
+```
+
+Activate it.
 
 Windows:
 
+```powershell
 venv\Scripts\activate
+```
 
-macOS / Linux:
+macOS/Linux:
 
+```bash
 source venv/bin/activate
+```
 
 Install dependencies:
 
+```bash
 pip install -r requirements.txt
+```
 
-CONFIGURE BACKEND ENVIRONMENT VARIABLES
+---
+
+### 4. Configure Backend Environment Variables
 
 Create:
 
+```text
 backend/.env
+```
 
-Add:
+Add the required configuration:
 
+```env
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
 DATABASE_URL=your_database_url
 GROQ_API_KEY=your_groq_api_key
+```
 
 Optional:
 
+```env
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 HF_TOKEN=your_huggingface_token
+```
 
 Never commit these values to source control.
 
-START THE BACKEND
+---
 
-From the backend directory:
+### 5. Start the Backend
 
+From the `backend` directory:
+
+```bash
 uvicorn main:app --reload
+```
 
 Backend:
 
+```text
 http://127.0.0.1:8000
+```
 
 Health check:
 
+```text
 http://127.0.0.1:8000/
+```
 
-SET UP THE FRONTEND
+---
+
+### 6. Set Up the Frontend
 
 Open another terminal.
 
-Navigate to:
+Navigate to the frontend:
 
+```bash
 cd frontend
+```
 
 Install dependencies:
 
+```bash
 npm install
+```
 
 Create:
 
+```text
 frontend/.env.local
+```
 
 Add:
 
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
 Optional:
 
-NEXT_PUBLIC_API_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+```
 
-START THE FRONTEND
+---
 
-From the frontend directory:
+### 7. Start the Frontend
 
+```bash
 npm run dev
+```
 
-Frontend:
+Open the application:
 
+```text
 http://localhost:3000
-
-Open the application at:
-
-http://localhost:3000
+```
 
 The Next.js application uses rewrites to proxy:
 
+```text
 /api/v1/*
+```
 
 to:
 
+```text
 http://127.0.0.1:8000/api/v1/*
+```
 
-NEXT_PUBLIC_API_URL can be used to override the backend URL.
+`NEXT_PUBLIC_API_URL` can be used to override the backend URL.
 
-Environment Variables
+---
 
-Frontend
+## Environment Variables
 
-NEXT_PUBLIC_SUPABASE_URL
-Required.
+### Frontend
 
-Supabase project URL.
-
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-Required.
-
-Supabase anonymous/public key.
-
-NEXT_PUBLIC_API_URL
-Optional.
-
-Backend API URL override.
+| Variable                        | Required | Description                    |
+| :------------------------------ | :------: | :----------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      |    Yes   | Supabase project URL.          |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` |    Yes   | Supabase anonymous/public key. |
+| `NEXT_PUBLIC_API_URL`           |    No    | Backend API URL override.      |
 
 Example:
 
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_API_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+```
 
-Backend
+### Backend
 
-SUPABASE_URL
-Required.
-
-Supabase project URL.
-
-SUPABASE_KEY
-Required.
-
-Supabase backend key.
-
-SUPABASE_SERVICE_ROLE_KEY
-Optional.
-
-Supabase service-role key for backend operations that require elevated privileges.
-
-DATABASE_URL
-Required.
-
-PostgreSQL database connection string.
-
-GROQ_API_KEY
-Required.
-
-Groq API key used for AI-powered extraction and analysis.
-
-HF_TOKEN
-Optional.
-
-Hugging Face token for handling model download/rate-limit scenarios.
+| Variable                    | Required | Description                                                 |
+| :-------------------------- | :------: | :---------------------------------------------------------- |
+| `SUPABASE_URL`              |    Yes   | Supabase project URL.                                       |
+| `SUPABASE_KEY`              |    Yes   | Supabase backend key.                                       |
+| `SUPABASE_SERVICE_ROLE_KEY` |    No    | Service-role key for elevated backend operations.           |
+| `DATABASE_URL`              |    Yes   | PostgreSQL connection string.                               |
+| `GROQ_API_KEY`              |    Yes   | Groq API key for AI extraction and analysis.                |
+| `HF_TOKEN`                  |    No    | Hugging Face token for model download/rate-limit scenarios. |
 
 Never commit real credentials or API keys.
 
-Supabase Configuration
+---
 
-CareerFit uses Supabase for three primary responsibilities:
+## Supabase Integration
 
-Authentication
+CareerFit uses Supabase for three primary responsibilities.
 
-↓
-
-Email / Password Authentication
-
-Database
-
-↓
-
-Supabase PostgreSQL
-
-Storage
-
-↓
-
-Private Resume PDFs
-
-Authentication
+### Authentication
 
 Users authenticate through Supabase Auth.
 
-The authenticated frontend obtains a Supabase session and sends the access token to FastAPI as a bearer token.
-
-Frontend
-
-↓
-
-Supabase Session
-
-↓
-
+```text
+User Login
+    |
+    v
+Supabase Auth
+    |
+    v
+Authenticated Session
+    |
+    v
 JWT Access Token
+    |
+    v
+FastAPI Authentication
+```
 
-↓
+### Database
 
-FastAPI
+Supabase PostgreSQL stores application data, including user-associated resume and job description records.
 
-↓
-
-Authentication Verification
-
-Resume Storage
+### Storage
 
 Uploaded resumes are stored in a private Supabase Storage bucket.
 
-Resume access is controlled using user-scoped storage policies.
-
 General upload flow:
 
+```text
 PDF Resume
-
-↓
-
+    |
+    v
 Frontend
-
-↓
-
+    |
+    v
 Base64 Payload
-
-↓
-
+    |
+    v
 FastAPI
-
-↓
-
+    |
+    v
 PDF Decoding
-
-↓
-
+    |
+    v
 Private Supabase Storage
-
-↓
-
+    |
+    v
 Resume Metadata in Database
+```
 
-Api Overview
+### Security
+
+Authenticated requests use Supabase JWT bearer tokens:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+The backend should verify the authenticated user before accessing or modifying user-owned resources.
+
+---
+
+## API Overview
 
 Backend base URL:
 
+```text
 http://127.0.0.1:8000
+```
 
-HEALTH
+### Health
 
-GET /
+`GET /`
 
 Health check for the FastAPI backend.
 
-RESUMES
+### Resumes
 
-GET /api/v1/resumes
+| Method | Endpoint                      | Description                            |
+| :----- | :---------------------------- | :------------------------------------- |
+| GET    | `/api/v1/resumes`             | List the authenticated user's resumes. |
+| GET    | `/api/v1/resumes/{resume_id}` | Retrieve a specific resume.            |
+| POST   | `/api/v1/resumes`             | Upload/create a resume.                |
+| DELETE | `/api/v1/resumes/{resume_id}` | Delete a resume.                       |
 
-List the authenticated user's resumes.
+### Job Descriptions
 
-GET /api/v1/resumes/{resume_id}
+| Method | Endpoint                | Description                          |
+| :----- | :---------------------- | :----------------------------------- |
+| GET    | `/api/v1/jobs`          | List the user's job descriptions.    |
+| GET    | `/api/v1/jobs/{job_id}` | Retrieve a specific job description. |
+| POST   | `/api/v1/jobs`          | Create a job description.            |
+| DELETE | `/api/v1/jobs/{job_id}` | Delete a job description.            |
 
-Retrieve a specific resume.
+### Extraction
 
-POST /api/v1/resumes
+| Method | Endpoint                             | Description                            |
+| :----- | :----------------------------------- | :------------------------------------- |
+| POST   | `/api/v1/extract/resume/{resume_id}` | Extract structured resume information. |
+| POST   | `/api/v1/extract/job/{jd_id}`        | Extract structured job requirements.   |
 
-Upload/create a resume.
+### Analysis
 
-DELETE /api/v1/resumes/{resume_id}
+| Method | Endpoint                              | Description                                       |
+| :----- | :------------------------------------ | :------------------------------------------------ |
+| POST   | `/api/v1/analyze`                     | Analyze a selected resume against a selected job. |
+| GET    | `/api/v1/analyze/{resume_id}/{jd_id}` | Legacy analysis route.                            |
 
-Delete a resume.
+---
 
-JOB DESCRIPTIONS
-
-GET /api/v1/jobs
-
-List the authenticated user's job descriptions.
-
-GET /api/v1/jobs/{job_id}
-
-Retrieve a specific job description.
-
-POST /api/v1/jobs
-
-Create a job description.
-
-DELETE /api/v1/jobs/{job_id}
-
-Delete a job description.
-
-EXTRACTION
-
-POST /api/v1/extract/resume/{resume_id}
-
-Extract structured information from a resume.
-
-POST /api/v1/extract/job/{jd_id}
-
-Extract structured requirements from a job description.
-
-ANALYSIS
-
-POST /api/v1/analyze
-
-Analyze a selected resume against a selected job description.
-
-GET /api/v1/analyze/{resume_id}/{jd_id}
-
-Legacy analysis route.
-
-Authentication Flow
-
-CareerFit uses Supabase JWT authentication between the frontend and backend.
-
-The general flow is:
-
-User Login
-
-↓
-
-Supabase Auth
-
-↓
-
-Authenticated Session
-
-↓
-
-Access Token
-
-↓
-
-Frontend API Request
-
-↓
-
-Authorization: Bearer <access_token>
-
-↓
-
-FastAPI Authentication Dependency
-
-↓
-
-Authenticated User
-
-↓
-
-User-Scoped Database / Storage Access
-
-Limits
+## Resource Limits
 
 CareerFit currently supports:
 
-Maximum resumes per user: 5
-
-Maximum job descriptions per user: 5
+| Resource         | Maximum per User |
+| :--------------- | :--------------: |
+| Resumes          |         5        |
+| Job Descriptions |         5        |
 
 When a user exceeds either limit, the oldest record is automatically deleted.
 
-Testing
+---
 
-Backend Tests
+## Testing
+
+### Backend Tests
 
 From the backend directory:
 
+```bash
 cd backend
-
 pytest
+```
 
 Matching engine tests are located at:
 
+```text
 backend/tests/test_engine.py
+```
 
 These tests validate important functionality of the deterministic matching engine.
 
-Frontend Build
+### Frontend Build
 
 From the frontend directory:
 
+```bash
 cd frontend
-
 npm run build
+```
 
 This verifies that the Next.js application can be compiled successfully.
 
-Frontend Lint
+### Frontend Lint
 
+```bash
 npm run lint
+```
 
-Linting may surface strict TypeScript or React Hook rules depending on the current configuration. These issues should be resolved before production deployment.
+Resolve any TypeScript, React, or linting issues before production deployment.
 
-Troubleshooting
+---
 
-Backend Cannot Connect To Supabase
+## Troubleshooting
+
+### Backend Cannot Connect to Supabase
 
 Check:
 
-• SUPABASE_URL
-• SUPABASE_KEY
-• DATABASE_URL
-• Supabase project status
-• PostgreSQL connection settings
+* `SUPABASE_URL`
+* `SUPABASE_KEY`
+* `DATABASE_URL`
+* Supabase project status.
+* PostgreSQL connection settings.
 
 Make sure the backend environment file is located at:
 
+```text
 backend/.env
+```
 
-Frontend Authentication Is Not Working
+### Frontend Authentication Is Not Working
 
 Verify:
 
+```env
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
 
 Also verify that email/password authentication is enabled in Supabase.
 
-Api Requests Fail From The Frontend
+### API Requests Fail from the Frontend
 
 Make sure the FastAPI server is running:
 
+```bash
 uvicorn main:app --reload
+```
 
 Verify the backend health endpoint:
 
+```text
 http://127.0.0.1:8000/
+```
 
 Also check:
 
-• NEXT_PUBLIC_API_URL
-• Next.js rewrite configuration
-• Backend CORS configuration if applicable
+* `NEXT_PUBLIC_API_URL`.
+* Next.js rewrite configuration.
+* Backend CORS configuration, if applicable.
 
-Resume Upload Fails
-
-Check:
-
-• The uploaded file is a valid PDF.
-• The resumes Storage bucket exists.
-• The bucket is private.
-• Storage policies allow authenticated users to access their own files.
-• Supabase credentials are configured correctly.
-
-Ai Analysis Fails
+### Resume Upload Fails
 
 Check:
 
+* The uploaded file is a valid PDF.
+* The resumes Storage bucket exists.
+* The bucket is private.
+* Storage policies allow authenticated users to access their own files.
+* Supabase credentials are configured correctly.
+
+### AI Analysis Fails
+
+Check:
+
+```env
 GROQ_API_KEY=your_groq_api_key
+```
 
 Also verify that the configured Groq model is available to the API account.
 
-Hugging Face Model Issues
+### Hugging Face Model Issues
 
 The semantic matching model:
 
+```text
 all-MiniLM-L6-v2
+```
 
 may need to be downloaded when first used.
 
 If Hugging Face rate limits become an issue, configure:
 
+```env
 HF_TOKEN=your_huggingface_token
+```
 
-Security Notes
+---
+
+## Security Notes
 
 CareerFit processes potentially sensitive documents. Production deployments should apply appropriate security controls.
 
-Secrets
+### Secrets
 
 Never commit:
 
-• .env
-• .env.local
-• API keys
-• Supabase service-role keys
-• Database credentials
-• JWT secrets
-• Other private credentials
+* `.env`
+* `.env.local`
+* API keys.
+* Supabase service-role keys.
+* Database credentials.
+* JWT secrets.
+* Other private credentials.
 
-Use environment variables or a secure secret-management solution.
-
-Resume Storage
+### Resume Storage
 
 Uploaded resumes are stored in a private Supabase Storage bucket.
 
 Access should remain user-scoped through Supabase Storage policies.
 
-Authentication
-
-Protected backend requests use Supabase JWT bearer tokens:
-
-Authorization: Bearer <access_token>
-
-The backend should verify the authenticated user before accessing or modifying user-owned resources.
-
-Service-Role Key
+### Service-Role Key
 
 The Supabase service-role key has elevated privileges.
 
 It must never be exposed to the browser or included in frontend environment variables.
 
-It should only be used on trusted backend infrastructure when necessary.
+Use it only on trusted backend infrastructure when necessary.
 
-Production Considerations
+### Production Considerations
 
 Before production deployment, consider adding:
 
-• API rate limiting
-• File-size limits
-• Stronger file/MIME validation
-• PDF validation
-• AI request quotas
-• Secure CORS configuration
-• Centralized secret management
-• Logging and monitoring
-• Error sanitization
-• Additional authorization tests
-• Production database configuration
-• Background processing for large AI/document operations
+* API rate limiting.
+* File-size limits.
+* Stronger file and MIME validation.
+* PDF validation.
+* AI request quotas.
+* Secure CORS configuration.
+* Centralized secret management.
+* Logging and monitoring.
+* Error sanitization.
+* Additional authorization tests.
+* Background processing for large AI/document operations.
 
-Development Flow
+---
 
-A typical CareerFit analysis follows:
+## Development Flow
 
+A typical CareerFit analysis follows this workflow:
+
+```text
 User
-↓
-
+  |
+  v
 Select Resume
-
-↓
-
+  |
+  v
 Select Job Description
-
-↓
-
+  |
+  v
 Next.js Frontend
-
-↓
-
+  |
+  v
 FastAPI API
-
-↓
-
+  |
+  v
 Retrieve Resume + Job Data
-
-↓
-
+  |
+  v
 Extract / Parse Content
-
-↓
-
+  |
+  v
 AI Analysis
-
-↓
-
+  |
+  v
 Semantic Skill Matching
-
-↓
-
+  |
+  v
 Requirement-Level Evaluation
-
-↓
-
+  |
+  v
 Structured Scoring
-
-↓
-
+  |
+  v
 Explainability Layer
-
-↓
-
+  |
+  v
 Analysis Report
-
-↓
-
+  |
+  v
 User Dashboard
+```
 
-Roadmap
+---
+
+## Roadmap
 
 Potential future improvements include:
 
-• More granular explanations for individual matches
-• Required vs. preferred requirement weighting
-• Confidence scores for semantic matches
-• Requirement-to-resume evidence linking
-• ATS keyword coverage analysis
-• Resume quality scoring independent of job fit
-• Resume rewriting suggestions
-• Job-specific resume optimization
-• Interview question generation based on identified gaps
-• Skill-gap learning recommendations
-• Multiple resume versions for different roles
-• Analysis history and comparison
-• Background processing for AI/document operations
-• Expanded automated test coverage
-• Production deployment
-• Improved observability and monitoring
+* More granular explanations for individual matches.
+* Required vs. preferred requirement weighting.
+* Confidence scores for semantic matches.
+* Requirement-to-resume evidence linking.
+* ATS keyword coverage analysis.
+* Resume quality scoring independent of job fit.
+* Resume rewriting suggestions.
+* Job-specific resume optimization.
+* Interview question generation based on identified gaps.
+* Skill-gap learning recommendations.
+* Multiple resume versions for different roles.
+* Analysis history and comparison.
+* Background processing for AI/document operations.
+* Expanded automated test coverage.
+* Production deployment.
+* Improved observability and monitoring.
 
-License
+---
+
+## License
 
 This project is currently provided for development and educational purposes.
 
@@ -1077,57 +1017,14 @@ If an open-source license is added to the repository, replace this section with 
 
 Do not claim an open-source license until an actual license file has been added to the repository.
 
-Quick Start
+---
 
-Backend:
+## Author
 
-cd backend
+**Kousumi**
 
-python -m venv venv
+CareerFit — Resume-to-job matching powered by AI, semantic matching, and explainable analysis.
 
-Windows:
-
-venv\Scripts\activate
-
-macOS/Linux:
-
-source venv/bin/activate
-
-pip install -r requirements.txt
-
-uvicorn main:app --reload
-
-Frontend:
-
-cd frontend
-
-npm install
-
-npm run dev
-
-Application:
-
-http://localhost:3000
-
-Backend:
-
-http://127.0.0.1:8000
-
-Run backend tests:
-
-cd backend
-
-pytest
-
-Build frontend:
-
-cd frontend
-npm run build
-
-Run frontend lint:
-
-npm run lint
-
-CareerFit
-
-Resume-to-job matching powered by AI, semantic matching, and explainable analysis.
+<p align="center">
+  <strong>Understand your fit. Improve your resume. Prepare for your next opportunity.</strong>
+</p>
