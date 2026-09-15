@@ -157,6 +157,73 @@ CareerFit follows a multi-stage pipeline that combines document understanding, s
              FINAL ANALYSIS REPORT
 ```
 
+The analysis combines LLM-based understanding with deterministic semantic matching and scoring.
+
+---
+
+## Analysis Report
+
+CareerFit is designed to provide more than a keyword match.
+
+### Overall Fit
+
+A high-level assessment of how closely the candidate's resume aligns with the selected role.
+
+### Score Breakdown
+
+The overall assessment can be analyzed across categories such as:
+
+* Skills.
+* Experience.
+* Tools and Technologies.
+* Education.
+* Responsibilities.
+
+### Skill Matching
+
+Skills are classified into different levels:
+
+| Classification | Meaning                                |
+| :------------- | :------------------------------------- |
+| Strong Match   | Strong evidence of the required skill. |
+| Match          | Relevant skill alignment.              |
+| Partial Match  | Related or incomplete skill alignment. |
+| Weak Evidence  | Limited supporting evidence.           |
+| Not Detected   | Skill not identified in the resume.    |
+
+### Requirement-Level Analysis
+
+Each important job requirement is compared against evidence found in the resume.
+
+```text
+Job Requirement
+      |
+      v
+Resume Evidence
+      |
+      v
+Match Assessment
+      |
+      v
+Explanation
+```
+
+### Gap Analysis
+
+Identifies missing or weakly supported requirements and prioritizes them according to their relevance to the selected job.
+
+### Resume Improvements
+
+Provides actionable suggestions for improving the resume and better demonstrating relevant skills and experience.
+
+### Interview Preparation
+
+Identifies areas that may require additional preparation based on the job requirements and candidate gaps.
+
+---
+
+## Architecture
+
 ```mermaid
 flowchart TD
 
@@ -252,117 +319,6 @@ class node_fastapi,node_auth_dependency,node_resource_apis,node_resume_model,nod
 class node_pdf_parser,node_ai_extractor,node_analyzer,node_matching_engine,node_ai_explainer toneMint
 class node_supabase_auth,node_postgres,node_private_storage toneRose
 class node_groq,node_embeddings toneNeutral
-```
-
-The analysis combines LLM-based understanding with deterministic semantic matching and scoring.
-
----
-
-## Analysis Report
-
-CareerFit is designed to provide more than a keyword match.
-
-### Overall Fit
-
-A high-level assessment of how closely the candidate's resume aligns with the selected role.
-
-### Score Breakdown
-
-The overall assessment can be analyzed across categories such as:
-
-* Skills.
-* Experience.
-* Tools and Technologies.
-* Education.
-* Responsibilities.
-
-### Skill Matching
-
-Skills are classified into different levels:
-
-| Classification | Meaning                                |
-| :------------- | :------------------------------------- |
-| Strong Match   | Strong evidence of the required skill. |
-| Match          | Relevant skill alignment.              |
-| Partial Match  | Related or incomplete skill alignment. |
-| Weak Evidence  | Limited supporting evidence.           |
-| Not Detected   | Skill not identified in the resume.    |
-
-### Requirement-Level Analysis
-
-Each important job requirement is compared against evidence found in the resume.
-
-```text
-Job Requirement
-      |
-      v
-Resume Evidence
-      |
-      v
-Match Assessment
-      |
-      v
-Explanation
-```
-
-### Gap Analysis
-
-Identifies missing or weakly supported requirements and prioritizes them according to their relevance to the selected job.
-
-### Resume Improvements
-
-Provides actionable suggestions for improving the resume and better demonstrating relevant skills and experience.
-
-### Interview Preparation
-
-Identifies areas that may require additional preparation based on the job requirements and candidate gaps.
-
----
-
-## Architecture
-
-```text
-                         USER
-                          |
-                          v
-                   NEXT.JS FRONTEND
-                          |
-                          v
-                   SUPABASE AUTH
-                          |
-                          v
-                   JWT ACCESS TOKEN
-                          |
-                          v
-                   FASTAPI BACKEND
-                          |
-        +-----------------+-----------------+
-        |                 |                 |
-        v                 v                 v
-   Resume APIs       Job APIs         Analysis APIs
-        |                 |                 |
-        +-----------------+-----------------+
-                          |
-        +-----------------+-----------------+
-        |                 |                 |
-        v                 v                 v
-  Supabase          Groq LLM       Sentence Transformers
-  Storage           Extraction     Semantic Matching
-                    & Analysis
-        |                 |                 |
-        +-----------------+-----------------+
-                          |
-                          v
-                   POSTGRESQL
-                          |
-                          v
-                STRUCTURED ANALYSIS
-                          |
-                          v
-                   ANALYSIS REPORT
-                          |
-                          v
-                   NEXT.JS UI
 ```
 
 ### System Components
