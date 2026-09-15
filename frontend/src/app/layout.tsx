@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthGuard } from "@/components/AuthGuard";
 import { Navbar } from "@/components/Navbar";
-import { PublicThemeToggle } from "@/components/PublicThemeToggle";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,11 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen bg-slate-50 text-slate-950 flex flex-col dark:bg-slate-950 dark:text-slate-100`}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${inter.className} min-h-screen bg-slate-950 text-slate-100 flex flex-col`}>
         <ThemeProvider>
           <AuthGuard>
-            <PublicThemeToggle />
             <Navbar />
             <main className="flex-1">
               {children}

@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const router = useRouter();
@@ -52,7 +51,6 @@ export function Navbar() {
               <Link href="/jobs" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
                 Jobs
               </Link>
-              <ThemeToggle />
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 Logout
               </Button>
