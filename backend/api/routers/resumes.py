@@ -1,5 +1,6 @@
 import os
 import base64
+import binascii
 import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,11 +55,18 @@ async def upload_resume(
     if not resume_in.file_name.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
     
+    encoded_file = resume_in.file_data.strip()
+    if "," in encoded_file:
+        encoded_file = encoded_file.split(",", 1)[1]
+
     try:
-        # Decode the Base64 string back into raw PDF bytes
-        content = base64.b64decode(resume_in.file_data)
-    except Exception:
+        # Decode the Base64 string back into raw PDF bytes.
+        content = base64.b64decode(encoded_file, validate=True)
+    except (binascii.Error, ValueError):
         raise HTTPException(status_code=400, detail="Invalid file encoding")
+
+    if not content.startswith(b"%PDF"):
+        raise HTTPException(status_code=400, detail="Uploaded file is not a valid PDF")
     
     # 1. Upload directly to Supabase Storage
     file_uuid_str = str(uuid.uuid4())

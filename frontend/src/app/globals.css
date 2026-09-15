@@ -128,3 +128,6 @@
     @apply font-sans;
   }
 }
+.indicator-purple > div {
+  background-color: #a855f7 !important; /* purple-500 */
+}

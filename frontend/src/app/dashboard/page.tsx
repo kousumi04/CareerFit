@@ -3,157 +3,168 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import AnalysisReport, { type AnalysisData } from "@/components/AnalysisReport";
 
-export default function DashboardPage() {
-  const [resumes, setResumes] = useState<any[]>([]);
-  const [jobs, setJobs] = useState<any[]>([]);
-  const [selectedResume, setSelectedResume] = useState("");
-  const [selectedJob, setSelectedJob] = useState("");
+type ResumeOption = {
+  id: string;
+  file_name: string;
+};
+
+type JobOption = {
+  id: string;
+  title?: string | null;
+  role_name?: string | null;
+};
+
+export default function MatchEnginePage() {
+  const [resumes, setResumes] = useState<ResumeOption[]>([]);
+  const [jobs, setJobs] = useState<JobOption[]>([]);
+  
+  const [selectedResumeId, setSelectedResumeId] = useState("");
+  const [selectedJobId, setSelectedJobId] = useState("");
   
   const [analyzing, setAnalyzing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisData | null>(null);
 
+  // Fetch user's resumes and jobs on load
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
-      
-      const headers = { 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session.access_token}` 
-      };
 
       try {
-        // Using relative paths to trigger the Next.js Proxy
-        const resumesRes = await fetch("/api/v1/resumes", { headers });
-        if (resumesRes.ok) setResumes(await resumesRes.json());
-      } catch (err) {
-        console.error("Network error fetching resumes:", err);
-      }
+        // Fetch resumes
+        const resResumes = await fetch("/api/v1/resumes", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (resResumes.ok) {
+          const data = await resResumes.json();
+          setResumes(data);
+          if (data.length > 0) setSelectedResumeId(data[0].id);
+        }
 
-      try {
-        const jobsRes = await fetch("/api/v1/jobs", { headers });
-        if (jobsRes.ok) setJobs(await jobsRes.json());
+        // Fetch jobs (Adjust endpoint if your jobs route is different)
+        const resJobs = await fetch("/api/v1/jobs", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (resJobs.ok) {
+          const data = await resJobs.json();
+          setJobs(data);
+          if (data.length > 0) setSelectedJobId(data[0].id);
+        }
       } catch (err) {
-        console.error("Network error fetching jobs:", err);
+        console.error("Failed to load initial data", err);
       }
     };
-    
-    loadData();
+
+    fetchData();
   }, []);
 
-  const handleAnalyze = async () => {
-    if (!selectedResume || !selectedJob) {
+  const handleAnalyze = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedResumeId || !selectedJobId) {
       alert("Please select both a resume and a job description.");
       return;
     }
 
     setAnalyzing(true);
-    setResult(null);
+    setAnalysisResult(null);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      setAnalyzing(false);
+      return;
+    }
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.access_token}`,
-      };
+      // Call your analysis endpoint (Adjust URL if your analysis route differs)
+      const res = await fetch("/api/v1/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          resume_id: selectedResumeId,
+          job_id: selectedJobId,
+        }),
+      });
 
-      // 1. Extract Resume (Relative path)
-      const resExtract = await fetch(`/api/v1/extract/resume/${selectedResume}`, { method: "POST", headers });
-      if (!resExtract.ok) throw new Error("Resume extraction failed");
-
-      // 2. Extract Job Description (Relative path)
-      const jdExtract = await fetch(`/api/v1/extract/job/${selectedJob}`, { method: "POST", headers });
-      if (!jdExtract.ok) throw new Error("Job extraction failed");
-
-      // 3. Run Analysis Engine (Relative path)
-      const analyzeRes = await fetch(`/api/v1/analyze/${selectedResume}/${selectedJob}`, { headers });
-      if (!analyzeRes.ok) throw new Error("Analysis engine failed");
-
-      const data = await analyzeRes.json();
-      setResult(data);
-    } catch (error: any) {
-      alert(`Pipeline Error: ${error.message}`);
+      if (res.ok) {
+        const data = await res.json();
+        setAnalysisResult(data);
+      } else {
+        const errText = await res.text();
+        alert(`Analysis failed: ${errText}`);
+      }
+    } catch (error) {
+      console.error("Error during analysis:", error);
+      alert("Network error during analysis.");
     } finally {
       setAnalyzing(false);
     }
   };
 
   return (
-    <div className="container mx-auto p-8 max-w-5xl">
-      <h1 className="text-3xl font-bold text-slate-900 mb-8 dark:text-white">CareerFit Match Engine</h1>
+    <div className="container mx-auto p-8 max-w-5xl text-neutral-200 space-y-8">
+      <h1 className="text-3xl font-bold text-white text-center">CareerFit Match Engine</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>1. Select Resume</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <select 
-              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              value={selectedResume}
-              onChange={(e) => setSelectedResume(e.target.value)}
-            >
-              <option value="">-- Choose a saved resume --</option>
-              {resumes.map(r => <option key={r.id} value={r.id}>{r.file_name}</option>)}
-            </select>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>2. Select Job Description</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <select 
-              className="w-full p-2 border border-slate-300 rounded-md bg-white text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              value={selectedJob}
-              onChange={(e) => setSelectedJob(e.target.value)}
-            >
-              <option value="">-- Choose a saved job --</option>
-              {jobs.map(j => <option key={j.id} value={j.id}>{j.title} {j.company ? `(${j.company})` : ""}</option>)}
-            </select>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex justify-center mb-8">
-        <Button size="lg" onClick={handleAnalyze} disabled={analyzing || !selectedResume || !selectedJob} className="w-full md:w-1/3">
-          {analyzing ? "Running AI Pipeline..." : "Analyze Fit"}
-        </Button>
-      </div>
-
-      {result && (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <Card className="border-t-4 border-t-indigo-600 shadow-lg">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-2xl">Analysis Report</CardTitle>
-              <CardDescription>Overall Match Score: <span className="font-bold text-lg text-indigo-600 dark:text-indigo-300">{result.match_data.scores.overall_score}%</span></CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-700 italic mb-6 dark:text-slate-300">"{result.explanation.summary}"</p>
+      {/* Selection Form Card */}
+      <Card className="border-neutral-900 bg-[#121212]">
+        <CardContent className="pt-6">
+          <form onSubmit={handleAnalyze} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
               
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-emerald-50 p-4 rounded-md border border-emerald-100 dark:border-emerald-500/30 dark:bg-emerald-500/10">
-                  <h3 className="font-semibold text-emerald-800 mb-2 dark:text-emerald-200">Key Strengths</h3>
-                  <ul className="list-disc pl-5 text-sm text-emerald-900 space-y-1 dark:text-emerald-100">
-                    {result.explanation.strengths.map((s: string, i: number) => <li key={i}>{s}</li>)}
-                  </ul>
-                </div>
-                <div className="bg-rose-50 p-4 rounded-md border border-rose-100 dark:border-rose-500/30 dark:bg-rose-500/10">
-                  <h3 className="font-semibold text-rose-800 mb-2 dark:text-rose-200">Identified Gaps</h3>
-                  <ul className="list-disc pl-5 text-sm text-rose-900 space-y-1 dark:text-rose-100">
-                    {result.explanation.gaps.map((g: string, i: number) => <li key={i}>{g}</li>)}
-                  </ul>
-                </div>
+              {/* Resume Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-neutral-400">1. Select Resume</label>
+                <select
+                  value={selectedResumeId}
+                  onChange={(e) => setSelectedResumeId(e.target.value)}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-md p-3 text-white text-sm focus:outline-none focus:border-purple-500"
+                >
+                  {resumes.map((res) => (
+                    <option key={res.id} value={res.id}>
+                      {res.file_name}
+                    </option>
+                  ))}
+                </select>
               </div>
-              
-              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-md text-center dark:border-slate-800 dark:bg-slate-950">
-                <p className="font-medium text-slate-800 dark:text-slate-200">Recommendation: {result.explanation.recommendation}</p>
+
+              {/* Job Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-neutral-400">2. Select Job Description</label>
+                <select
+                  value={selectedJobId}
+                  onChange={(e) => setSelectedJobId(e.target.value)}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-md p-3 text-white text-sm focus:outline-none focus:border-purple-500"
+                >
+                  {jobs.map((job) => (
+                    <option key={job.id} value={job.id}>
+                      {job.title || job.role_name || `Job #${job.id}`}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </CardContent>
-          </Card>
+
+            </div>
+
+            <Button 
+              type="submit" 
+              disabled={analyzing || !selectedResumeId || !selectedJobId}
+              className="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3"
+            >
+              {analyzing ? "Analyzing Evidence & Match..." : "Analyze Fit"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* Render the New Explainable Analysis Report Component */}
+      {analysisResult && (
+        <div className="mt-12 bg-[#121212] border border-neutral-900 p-8 rounded-xl shadow-2xl">
+          <AnalysisReport data={analysisResult} />
         </div>
       )}
     </div>
