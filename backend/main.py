@@ -7,15 +7,11 @@ app = FastAPI(title="CareerFit API", version="1.0.0")
 # Configure CORS for local development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", 
-        "http://127.0.0.1:3000"
-    ],
+    allow_origins=["*"], # Allows Vercel to connect to this backend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 @app.get("/")
 async def root():
     return {"message": "CareerFit API is running"}
