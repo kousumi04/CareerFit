@@ -462,7 +462,7 @@ CareerFit/
 
 ---
 
-## Getting Started
+## How to run locally
 
 ### Prerequisites
 
@@ -540,13 +540,13 @@ pip install -r requirements.txt
 
 ### 4. Configure Backend Environment Variables
 
-Create:
+Create the backend environment file from the example:
 
-```text
-backend/.env
+```bash
+cp .env.example .env
 ```
 
-Add the required configuration:
+Then fill in the required configuration:
 
 ```env
 SUPABASE_URL=your_supabase_url
@@ -604,13 +604,13 @@ Install dependencies:
 npm install
 ```
 
-Create:
+Create the frontend environment file from the example:
 
-```text
-frontend/.env.local
+```bash
+cp .env.example .env.local
 ```
 
-Add:
+Then fill in:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
